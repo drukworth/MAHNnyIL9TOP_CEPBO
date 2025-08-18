@@ -5,13 +5,14 @@
 #define pot4 3 //o
 #define pot5 6 //o - Указываем порты для подключения потенциометров
 
+#include <Arduino.h>
 #include <Servo.h>
+#include <EEPROM.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <EncButton.h>
-#include <Arduino.h>
 #include <GyverIO.h>
-#include <EEPROM.h>
+
 
 unsigned long last_time;
 unsigned long pusk_wait_start_time;
@@ -181,6 +182,7 @@ void loop() {
         }
       if (eb.click()){//Возврат в главное меню
         menu_level = 1;
+        pusk_povtor = eeprom_info[0] + 1;
         }
       if (eb.hold()){
         mode_active = !mode_active;
@@ -209,10 +211,10 @@ else if (menu_level == 2 && menu == 2) {
           lcd.print("Pusk");
           lcd.setCursor(0, 1);
           lcd.print("Vse");
-          lcd.setCursor(9, 0);
-          lcd.print("Gotovo");
-          lcd.setCursor(5, 1);
-          lcd.print("Hold to end");
+          lcd.setCursor(5, 0);
+          lcd.print("Click-again");
+          lcd.setCursor(8, 1);
+          lcd.print("Hold-end");
           }
         } 
       else {
@@ -309,6 +311,9 @@ else if (menu_level == 2 && menu == 2) {
 
       if (eb.hold()) {
         mode_active = !mode_active;
+        }
+      if (eb.click()){
+        pusk_povtor = eeprom_info[0] + 1;
         }
       } 
     else {
@@ -461,6 +466,7 @@ else if (menu_level == 2 && menu == 2) {
       }
   }
 }
+
 
 
 
